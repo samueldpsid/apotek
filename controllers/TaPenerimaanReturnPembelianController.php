@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\TaPenerimaanReturnPembelian;
 use app\models\TaReturnPembelian;
+use app\models\RefObat;
 use app\models\search\TaPenerimaanReturnPembelianSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -90,7 +91,12 @@ class TaPenerimaanReturnPembelianController extends Controller
                     ->asArray()
                     ->all(), 'id', 'distributor');
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $modelObat->load(Yii::$app->request->post())) {
+
+            $stokObat = RefObat::find()->where(['id'=>$modelObat->obat_id])->one();
+            $stokObat->stok += $modelObat->jumlah;
+            $stokObat->save();
+
             if ($model->save()) {
                 $data = TaReturnPembelian::find()->where(['id' => $model->return_pembelian_id])->one();
                 $data->status = '1';

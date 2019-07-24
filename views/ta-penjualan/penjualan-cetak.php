@@ -67,15 +67,15 @@
     <tfoot>
         <tr>
             <td colspan="3" style="font-size: 12px;"><b>Grand Total</b></td>
-            <td style="text-align: right; font-size: 12px;"><?= number_format($grand_total,0,",",".") ?></td>
+            <td style="text-align: right; font-size: 12px;"><b><?= number_format($grand_total,0,",",".") ?></b></td>
         </tr>
         <tr style="border: 0px;">
             <td colspan="3" style="font-size: 12px;"><b>Bayar</b></td>
-            <td style="text-align: right; font-size: 12px;"><?= number_format($uang_bayar,0,",",".") ?></td>
+            <td style="text-align: right; font-size: 12px;"><b><?= number_format($uang_bayar,0,",",".") ?></b></td>
         </tr>
         <tr>
             <td colspan="3" style="font-size: 12px; border-bottom: 1px solid #ddd; border-top: 0px;"><b>Kembali</b></td>
-            <td style="text-align: right; font-size: 12px; border-bottom: 1px solid #ddd; border-top: 0px"><?= number_format($uang_kembali,0,",",".") ?></td>
+            <td style="text-align: right; font-size: 12px; border-bottom: 1px solid #ddd; border-top: 0px"><b><?= number_format($uang_kembali,0,",",".") ?></b></td>
         </tr>
     </tfoot>
 </table>

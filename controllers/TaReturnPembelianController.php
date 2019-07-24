@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\TaReturnPembelian;
+use app\models\RefObat;
 use app\models\search\TaReturnPembelianSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -87,10 +88,17 @@ class TaReturnPembelianController extends Controller
         $modelReturnPembelian = new \yii\base\DynamicModel(['nama_obat', 'stok']);
         $modelReturnPembelian->addRule(['catatan', 'nama_obat'], 'string', ['max' => 255]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', "Data berhasil disimpan");
-            // return $this->redirect(['index']);
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            $stokObat = RefObat::find()->where(['id'=>$model->obat_id])->one();
+            $stokObat->stok -= $model->jumlah;
+            $stokObat->save();
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan");
+                // return $this->redirect(['index']);
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
