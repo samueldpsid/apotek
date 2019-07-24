@@ -28,7 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
+                    [
+                        'class' => 'yii\grid\SerialColumn' , 
+                        'contentOptions' => [
+                            'style' => 'text-align:center; vertical-align: middle;',
+                        ]
+                    ],
                     [
                         'class' => 'kartik\grid\ExpandRowColumn',
                         'value' => function ($model) {
@@ -40,20 +45,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]);
                         }
                     ],
-                    'id',
+                    [
+                        'attribute' => 'id',
+                        'contentOptions' => [
+                            'style' => 'white-space:normal; vertical-align: middle;'
+                        ],
+                    ],
                     [
                         'attribute' => 'tanggal',
                         'contentOptions' => [
-                            'style' => 'white-space:normal; text-align:right;'
+                            'style' => 'white-space:normal; text-align:right; vertical-align: middle;'
                         ],
                     ],
                     [   
-                        'label' => 'Grand Total',
+                        'label' => 'Grand Total (Rp)',
                         'value' => function($model) {
-                        return number_format($model->grand_total, 0,",",".");
+                            return number_format($model->grand_total, 0,",",".");
                         },
                         'contentOptions' => [
-                            'style' => 'white-space:normal; text-align:right; font-weight:600;'
+                            'style' => 'white-space:normal; text-align:right; font-weight:600; vertical-align: middle;'
                         ],
                     ],
                     // ['class' => 'yii\grid\ActionColumn', 'template'=>'{view}'],

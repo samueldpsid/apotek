@@ -76,6 +76,8 @@ class TaPenjualanController extends Controller
      */
     public function actionCreate()
     {
+        // unset($_SESSION['obat']);
+
         $session = Yii::$app->session;
 
         if ($session->has('obat')) {
@@ -84,8 +86,6 @@ class TaPenjualanController extends Controller
         else {
             $obat = [];
         }
-
-        // print_r($obat);die();
 
         $kdPJ = TaPenjualan::find()
                 ->select('id')
@@ -103,9 +103,9 @@ class TaPenjualanController extends Controller
         $kodePJ = substr($last_kdPJ, 3, 6);
         $kodePJ++;
 
-        $modelObat = new \yii\base\DynamicModel(['kd_obat', 'qty', 'uang_bayar', 'uang_kembali', 'catatan', 'user', 'kd_penjualan', 'tanggal', 'stok']);
+        $modelObat = new \yii\base\DynamicModel(['kd_obat', 'nama_obat', 'qty', 'uang_bayar', 'uang_kembali', 'catatan', 'user', 'kd_penjualan', 'tanggal', 'stok']);
         $modelObat->addRule(['kd_obat', 'kd_penjualan'], 'string', ['max' => 128]);
-        $modelObat->addRule(['catatan', 'user'], 'string', ['max' => 255]);
+        $modelObat->addRule(['nama_obat', 'catatan', 'user'], 'string', ['max' => 255]);
         $modelObat->addRule(['qty', 'stok'], 'integer');
         $modelObat->kd_penjualan = 'PJ-' . sprintf('%06s', $kodePJ);
         $modelObat->user = Yii::$app->user->identity->username;

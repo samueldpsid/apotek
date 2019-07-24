@@ -16,10 +16,12 @@ $this->registerJs("
         var kd_obat = $(this).data('kode');
         var nama_obat = $(this).data('nama');
         var harga_beli = $(this).data('beli');
+        var stok = $(this).data('stok');
 
         $('#kd_obat').val(kd_obat);
         $('#nama_obat').val(nama_obat);
         $('#harga_beli').val(harga_beli);
+        $('#stok').val(stok);
     });
 
     $(document).on('click', '#btn-add', function(e){
@@ -41,6 +43,7 @@ $this->registerJs("
             $('#nama_obat').val('');
             $('#qty').val('');
             $('#harga_beli').val('');
+            $('#stok').val('');
         } 
     });
 
@@ -82,6 +85,9 @@ $this->registerJs("
 
         if (kd_distributor == '') {
             alert ('Silahkan Pilih Distributor !');
+        }
+        else if (grand_total == 0) {
+            alert ('Data tidak tersedia !');
         }
         else {
             $.ajax({ 
@@ -140,6 +146,8 @@ $this->registerJs("
 
                     <?= $form->field($modelPembelian, 'nama_obat')->textarea(['id' => 'nama_obat', 'rows' => '3', 'placeholder' => '', 'readOnly'=>true,])
                     ?>
+
+                    <?= $form->field($modelPembelian, 'stok')->textInput(['id'=>'stok', 'maxlength'=>true, 'autocomplete'=>'off', 'readOnly'=>true])->label('Stok') ?>
 
                     <?= $form->field($modelPembelian, 'harga_beli')->textInput(['id'=>'harga_beli', 'maxlength'=>true, 'autocomplete'=>'off', 'readOnly'=>true])->label('Harga') ?>
 

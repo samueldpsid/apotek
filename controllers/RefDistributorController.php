@@ -143,7 +143,7 @@ class RefDistributorController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate()
+    public function actionUpdate($id)
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);       

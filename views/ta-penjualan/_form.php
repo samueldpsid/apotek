@@ -14,8 +14,11 @@ $this->registerJs("
     $(document).on('click', '.btn-pilih', function(e){
         e.preventDefault();
         var kd_obat = $(this).data('kode');
+        var nama_obat = $(this).data('nama');
         var stok = $(this).data('stok');
+
         $('#kd_obat').val(kd_obat);
+        $('#nama_obat').val(nama_obat);
         $('#stok').val(stok);
     });
 
@@ -87,16 +90,24 @@ $this->registerJs("
         var uang_bayar = $('#uang_bayar').val();
         var uang_kembali = $('#uang_kembali').val();
 
-        $.ajax({ 
-            type: 'GET',
-            url:'index.php?r=ta-penjualan/save',
-            data:{kd_penjualan : kd_penjualan, grand_total : grand_total},
-            success: function(data){
-                window.open('index.php?r=ta-penjualan%2Fcetak-penjualan&uang_bayar=' + uang_bayar + '&uang_kembali=' + uang_kembali + '&grand_total=' + grand_total + '&kd_penjualan=' + kd_penjualan, '_blank');
-                window.location.href = '".Url::to(['create'])."';
-                // alert(data);
-            },
-        });
+        if(grand_total == 0) {
+            alert('Data tidak tersedia!');
+        }
+        else if (uang_kembali <= 0) {
+            alert('Silahkan Isi Jumlah Pembayaran Dengan Benar !');
+        }
+        else {
+            $.ajax({ 
+                type: 'GET',
+                url:'index.php?r=ta-penjualan/save',
+                data:{kd_penjualan : kd_penjualan, grand_total : grand_total},
+                success: function(data){
+                    window.open('index.php?r=ta-penjualan%2Fcetak-penjualan&uang_bayar=' + uang_bayar + '&uang_kembali=' + uang_kembali + '&grand_total=' + grand_total + '&kd_penjualan=' + kd_penjualan, '_blank');
+                    window.location.href = '".Url::to(['create'])."';
+                    // alert(data);
+                },
+            });
+        }
     });
 
 ");
@@ -109,14 +120,15 @@ $this->registerJs("
 <style type="text/css">
     #tbody {
         vertical-align: middle;
-        font-size: 14px;
-        padding: 5px;
+        font-size: 12px;
+        /*padding: 5px;*/
+        /*font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;*/
     }
 </style>
 
 <div class="ta-penjualan-form">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="box box-default">
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-info"></i> Info Struk</h3>
@@ -125,7 +137,7 @@ $this->registerJs("
                     <?php 
                         $form = ActiveForm::begin([
                             'options' => [],
-                            'type' => ActiveForm::TYPE_HORIZONTAL,
+                            'type' => ActiveForm::TYPE_VERTICAL,
                             'formConfig' => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_SMALL]
                         ]); 
                     ?>
@@ -151,36 +163,55 @@ $this->registerJs("
             </div>
         </div>
         
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="box box-default">
                 <div class="box-body">
                     <?php 
                         $form = ActiveForm::begin([
                             'options' => ['id' => 'form-add'],
-                            'type' => ActiveForm::TYPE_HORIZONTAL,
-                            'formConfig' => ['labelSpan' => 3, 'deviceSize' => ActiveForm::SIZE_SMALL]
+                            // 'type' => ActiveForm::TYPE_HORIZONTAL,
+                            // 'formConfig' => ['labelSpan' => 12, 'deviceSize' => ActiveForm::SIZE_SMALL]
                         ]); 
                     ?>
-                    <div class="col-md-5">
-                        <?php 
-                            echo $form->field($modelObat, 'kd_obat', [
-                                'addon' => [
-                                    'append' => [
-                                        'content' => Html::button('<i class="fa fa-search"></i>', ['class'=>'btn btn-primary', 'data-pjax' => '0', 'data-toggle' => 'modal', 'data-target' => '#modal_obat']),
-                                        'asButton' => true
-                                    ]
-                                ],
-                            ])->textInput(['id' => 'kd_obat', 'readOnly' => true])->label('Kode Obat'); 
-                        ?>
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <?php 
+                                echo $form->field($modelObat, 'nama_obat', [
+                                    'addon' => [
+                                        'append' => [
+                                            'content' => Html::button('<i class="fa fa-search"></i>', ['class'=>'btn btn-flat btn-primary', 'data-pjax' => '0', 'data-toggle' => 'modal', 'data-target' => '#modal_obat']),
+                                            'asButton' => true
+                                        ]
+                                    ],
+                                ])->textInput(['id' => 'nama_obat', 'readOnly' => true, 'placeholder' => 'Pilih Obat'])->label(false); 
+                            ?>
+                            <?= $form->field($modelObat, 'kd_obat')->hiddenInput(['id'=>'kd_obat', 'maxlength'=>true, 'autocomplete'=>'off'])->label(false) ?>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="col-sm-3">
+                                <h5><b>Stok</b></h5>
+                            </div>
+                            <div class="col-sm-9">
+                                <?= $form->field($modelObat, 'stok')->textInput(['id'=>'stok', 'maxlength'=>true, 'autocomplete'=>'off', 'readOnly'=>true])->label(false) ?>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="col-sm-3">
+                                <h5><b>Qty</b></h5>
+                            </div>
+                            <div class="col-sm-9">
+                                <?= $form->field($modelObat, 'qty')->textInput(['id'=>'qty', 'maxlength'=>true, 'autocomplete'=>'off'])->label(false) ?>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <?= $form->field($modelObat, 'stok')->textInput(['id'=>'stok', 'maxlength'=>true, 'autocomplete'=>'off', 'readOnly'=>true])->label('Stok') ?>
-                    </div>
-                    <div class="col-md-3">
-                        <?= $form->field($modelObat, 'qty')->textInput(['id'=>'qty', 'maxlength'=>true, 'autocomplete'=>'off'])->label('Jumlah') ?>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <?= Html::button('<i class="fa fa-cart-plus"></i> Add to List', ['class'=>'btn btn-flat btn-primary', 'id'=>'btn-add']) ?>
+                        </div>
+                        
                     </div>
                     
-                    <?= Html::button('<i class="fa fa-plus"></i> Add', ['class'=>'btn btn-primary pull-right', 'id'=>'btn-add']) ?>
 
                     <?php ActiveForm::end(); ?>
                 </div>
@@ -234,54 +265,52 @@ $this->registerJs("
     </div>
 
     <div class="row">
-        <div class="col-md-4">
-            
+        <div class="col-md-3">
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="box box-default">
                 <div class="box-body">
-                    <div class="col-md-6">
-                        <?= $form->field($modelObat, 'catatan')->textarea(['id' => 'catatan', 'rows' => '4', 'placeholder' => 'Tambahkan catatan'])
+                    <?php 
+                        $form = ActiveForm::begin([
+                            'options' => [],
+                            'type' => ActiveForm::TYPE_HORIZONTAL,
+                            'formConfig' => ['labelSpan' => 2, 'deviceSize' => ActiveForm::SIZE_SMALL]
+                        ]); 
+                    ?>
+                    <div class="col-sm-6">
+                        
+                    </div>
+                    <div class="col-sm-6">
+                        <?= $form->field($modelObat, 'uang_bayar')
+                            ->widget(\yii\widgets\MaskedInput::className(), [
+                                'options' => ['id' => 'uang-bayar', 'style'=> 'text-align: right; font-weight: 600;'],
+                                'clientOptions' => [
+                                    'alias' => 'numeric',
+                                    'radixPoint' => '.',
+                                    'groupSeparator' => ',',
+                                    'removeMaskOnSubmit' => true,
+                                    'autoGroup' => true
+                                ],
+                            ])->label('Bayar')
                         ?>
-                    </div>
 
-                    <div class="col-md-6">
-                        <?php 
-                            $form = ActiveForm::begin([
-                                'options' => [],
-                                'type' => ActiveForm::TYPE_HORIZONTAL,
-                                'formConfig' => ['labelSpan' => 2, 'deviceSize' => ActiveForm::SIZE_SMALL]
-                            ]); 
+                        <?= $form->field($modelObat, 'uang_kembali')
+                            ->textInput(['id' => 'uang-kembali', 'style'=> 'text-align:right; font-weight: 600', 'readOnly' => 'true'])
+                            ->label('Kembali')
                         ?>
 
-                            <?= $form->field($modelObat, 'uang_bayar')
-                                ->widget(\yii\widgets\MaskedInput::className(), [
-                                    'options' => ['id' => 'uang-bayar', 'style'=> 'text-align: right; font-weight: 600;'],
-                                    'clientOptions' => [
-                                        'alias' => 'numeric',
-                                        'radixPoint' => '.',
-                                        'groupSeparator' => ',',
-                                        'removeMaskOnSubmit' => true,
-                                        'autoGroup' => true
-                                    ],
-                                ])->label('Bayar')
-                            ?>
-
-                            <?= $form->field($modelObat, 'uang_kembali')
-                                ->textInput(['id' => 'uang-kembali', 'style'=> 'text-align:right; font-weight: 600', 'readOnly' => 'true'])
-                                ->label('Kembali')
-                            ?>
-
-                            <input type="text" hidden="true" id="uang_bayar">
-                            <input type="text" hidden="true" id="uang_kembali">
-        
-                        <?php ActiveForm::end(); ?>
+                        <input type="text" hidden="true" id="uang_bayar">
+                        <input type="text" hidden="true" id="uang_kembali">
                     </div>
-                <div class="box-footer">
-                    <div class="form-group">
-                        <?= Html::button('<i class="fa fa-send"></i> Proses Pembayaran', ['class' => 'btn btn-flat btn-primary pull-right', 'id' => 'btn-simpan']) ?>
+                    <?php ActiveForm::end(); ?>
+                    <div class="col-sm-6">
+                        
                     </div>
-                </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <?= Html::button('<i class="fa fa-send"></i> Proses Pembayaran', ['class' => 'btn btn-flat btn-success pull-right', 'id' => 'btn-simpan']) ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

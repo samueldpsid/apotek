@@ -100,10 +100,10 @@ class TaPembelianController extends Controller
         $kdPembelian = substr($last_kode, 3, 6);
         $kdPembelian++;
 
-        $modelPembelian = new \yii\base\DynamicModel(['kd_obat', 'qty', 'uang_bayar', 'uang_kembali', 'catatan', 'kd_pembelian', 'tanggal', 'nama_obat', 'distributor_id', 'harga_beli']);
+        $modelPembelian = new \yii\base\DynamicModel(['kd_obat', 'qty', 'stok', 'uang_kembali', 'catatan', 'kd_pembelian', 'tanggal', 'nama_obat', 'distributor_id', 'harga_beli']);
         $modelPembelian->addRule(['kd_obat', 'kd_pembelian'], 'string', ['max' => 128]);
         $modelPembelian->addRule(['catatan', 'nama_obat'], 'string', ['max' => 255]);
-        $modelPembelian->addRule(['qty', 'distributor_id', 'harga_beli'], 'integer');
+        $modelPembelian->addRule(['qty', 'distributor_id', 'harga_beli', 'stok'], 'integer');
         $modelPembelian->kd_pembelian = 'PB-' . sprintf('%06s', $kdPembelian);
         $modelPembelian->tanggal = date('d/m/Y');
         $modelPembelian->uang_kembali = 0;

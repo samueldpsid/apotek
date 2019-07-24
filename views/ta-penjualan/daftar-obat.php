@@ -35,25 +35,37 @@ use kartik\grid\GridView;
                 [
                     'class'=>'\kartik\grid\DataColumn',
                     'attribute'=>'id',
+                    'contentOptions' => [
+                        'style' => 'white-space:normal; vertical-align:middle;'
+                    ],
                 ],
                 [
                     'class'=>'\kartik\grid\DataColumn',
                     'attribute'=>'nama_obat',
+                    'contentOptions' => [
+                        'style' => 'white-space:normal; vertical-align:middle;'
+                    ],
                 ],
                 [
                     'class'=>'\kartik\grid\DataColumn',
                     'attribute'=>'kategori.kategori',
+                    'contentOptions' => [
+                        'style' => 'white-space:normal; vertical-align:middle;'
+                    ],
                 ],
                 [
                     'class'=>'\kartik\grid\DataColumn',
                     'attribute'=>'satuan.satuan',
+                    'contentOptions' => [
+                        'style' => 'white-space:normal; vertical-align:middle;'
+                    ],
                 ],
                 [
                     'class'=>'\kartik\grid\DataColumn',
                     'value'=>'harga_beli',
                     'label'=>'Harga Beli',
                     'contentOptions' => [
-                        'style' => 'white-space:normal; text-align:right;'
+                        'style' => 'white-space:normal; text-align:right; vertical-align:middle;'
                     ],
                 ],
                 [
@@ -61,7 +73,7 @@ use kartik\grid\GridView;
                     'value'=>'harga_jual',
                     'label'=>'Harga Jual',
                     'contentOptions' => [
-                        'style' => 'white-space:normal; text-align:right;'
+                        'style' => 'white-space:normal; text-align:right; vertical-align:middle;'
                     ],
                 ],
                 [
@@ -69,7 +81,7 @@ use kartik\grid\GridView;
                     'value'=>'stok',
                     'label' => 'Stok',
                     'contentOptions' => [
-                        'style' => 'white-space:normal; text-align:center;'
+                        'style' => 'white-space:normal; text-align:center; vertical-align:middle;'
                     ],
                 ],
                 [
@@ -80,7 +92,7 @@ use kartik\grid\GridView;
                         }
                         else {
                             return Html::button('Pilih', [
-                                'class' => 'btn bg-red btn-pilih',
+                                'class' => 'btn btn-sm bg-red btn-pilih',
                                 'data-kode' => $model->id,
                                 'data-nama' => $model->nama_obat,
                                 'data-kategori' => $model->kategori_id,

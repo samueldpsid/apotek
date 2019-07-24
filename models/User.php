@@ -60,6 +60,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+            ['email', 'email'],
             // ['username', 'match', 'pattern' => '/^[a-z]\w*$/i', 'message' => 'Invalid characters in username.'],
         ];
     }
