@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 // use yii\grid\GridView;
 use kartik\grid\GridView;
+use mdm\admin\components\Helper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\TaPenjualanSearch */
@@ -17,7 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
             <p>
-                <?= Html::a('<i class="fa fa-plus"></i> Penjualan Baru', ['create'], ['class' => 'btn btn-flat btn-primary']) ?>
+                <?php if (Helper::checkRoute('create')): ?>
+                    <?= Html::a('<i class="fa fa-plus"></i> Penjualan Baru', ['create'], ['class' => 'btn btn-flat btn-primary']) ?>
+                <?php endif ?>
+                
             </p>
 
             <?= GridView::widget([

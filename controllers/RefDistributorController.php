@@ -10,13 +10,14 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
+use yii\rest\ActiveController;
 
 /**
  * RefDistributorController implements the CRUD actions for RefDistributor model.
  */
 class RefDistributorController extends Controller
 {
-    // public  $enableCsrfValidation = false;
+    public  $enableCsrfValidation = false;
     /**
      * @inheritdoc
      */
@@ -38,7 +39,7 @@ class RefDistributorController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {    
+    { 
         $searchModel = new RefDistributorSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -82,21 +83,6 @@ class RefDistributorController extends Controller
      */
     public function actionCreate()
     {
-
-        // \Yii::$app->response->format = \yii\web\Response:: FORMAT_JSON;
-
-        // $model = new RefDistributor();
-        // $model->scenario = RefDistributor:: SCENARIO_CREATE;
-        // $model->attributes = \yii::$app->request->post();
-
-        // if ($model->validate()) {
-        //     $model->save();
-        //     return array('status'=>true);
-        // }
-        // else {
-        //     return array('status'=>false,'data'=>$model->getErrors());
-        // }
-
         $request = Yii::$app->request;
         $model = new RefDistributor();  
 
@@ -157,7 +143,7 @@ class RefDistributorController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate()
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);       
@@ -217,7 +203,7 @@ class RefDistributorController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
         $request = Yii::$app->request;
         $this->findModel($id)->delete();
@@ -234,8 +220,6 @@ class RefDistributorController extends Controller
             */
             return $this->redirect(['index']);
         }
-
-
     }
 
      /**

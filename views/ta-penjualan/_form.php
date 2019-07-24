@@ -238,8 +238,6 @@ $this->registerJs("
             
         </div>
         <div class="col-md-8">
-            
-        
             <div class="box box-default">
                 <div class="box-body">
                     <div class="col-md-6">

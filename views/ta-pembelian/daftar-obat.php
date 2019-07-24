@@ -52,9 +52,9 @@ use kartik\grid\GridView;
                     'class'=>'\kartik\grid\DataColumn',
                     'value'=>'harga_beli',
                     'label'=>'Harga Beli',
-                    'contentOptions' => [
-                        'style' => 'white-space:normal; text-align:right;'
-                    ],
+                        'contentOptions' => [
+                            'style' => 'white-space:normal; text-align:right;'
+                        ], 
                 ],
                 [
                     'class'=>'\kartik\grid\DataColumn',
@@ -75,22 +75,17 @@ use kartik\grid\GridView;
                 [
                     'format' => 'raw',
                     'value' => function($model) {
-                        if ($model->stok == 0) {
-                            return " ";
-                        }
-                        else {
-                            return Html::button('Pilih', [
-                                'class' => 'btn bg-red btn-pilih',
-                                'data-kode' => $model->id,
-                                'data-nama' => $model->nama_obat,
-                                'data-kategori' => $model->kategori_id,
-                                'data-satuan' => $model->satuan_id,
-                                'data-beli' => $model->harga_beli,
-                                'data-harga' => $model->harga_jual,
-                                'data-stok' => $model->stok,
-                                'data-dismiss' => 'modal',
-                            ]);
-                        }
+                        return Html::button('Pilih', [
+                            'class' => 'btn bg-red btn-pilih',
+                            'data-kode' => $model->id,
+                            'data-nama' => $model->nama_obat,
+                            'data-kategori' => $model->kategori_id,
+                            'data-satuan' => $model->satuan_id,
+                            'data-beli' => $model->harga_beli,
+                            'data-harga' => $model->harga_jual,
+                            'data-stok' => $model->stok,
+                            'data-dismiss' => 'modal',
+                        ]);
                     }
                 ],
             ],

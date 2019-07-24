@@ -84,27 +84,27 @@ class TaPembelianController extends Controller
             $obat = [];
         }
 
-        $kd_obat = TaPembelian::find()
+        $kode = TaPembelian::find()
                 ->select('id')
                 ->orderBy(['id' => SORT_DESC])
                 ->limit(1)
                 ->all();
 
-        if (empty($kd_obat)) {
-            $last_kd_obat = "PB-000000";
+        if (empty($kode)) {
+            $last_kode = "PB-000000";
         }
         else {
-            $last_kd_obat = $kd_obat[0]['id'];
+            $last_kode = $kode[0]['id'];
         }
         
-        $kdObat = substr($last_kd_obat, 3, 6);
-        $kdObat++;
+        $kdPembelian = substr($last_kode, 3, 6);
+        $kdPembelian++;
 
         $modelPembelian = new \yii\base\DynamicModel(['kd_obat', 'qty', 'uang_bayar', 'uang_kembali', 'catatan', 'kd_pembelian', 'tanggal', 'nama_obat', 'distributor_id', 'harga_beli']);
         $modelPembelian->addRule(['kd_obat', 'kd_pembelian'], 'string', ['max' => 128]);
         $modelPembelian->addRule(['catatan', 'nama_obat'], 'string', ['max' => 255]);
         $modelPembelian->addRule(['qty', 'distributor_id', 'harga_beli'], 'integer');
-        $modelPembelian->kd_pembelian = 'PB-' . sprintf('%06s', $kdObat);
+        $modelPembelian->kd_pembelian = 'PB-' . sprintf('%06s', $kdPembelian);
         $modelPembelian->tanggal = date('d/m/Y');
         $modelPembelian->uang_kembali = 0;
 

@@ -6,6 +6,7 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'name' => 'Aplikasi Apotek',
+    'timeZone' => 'Asia/Jakarta',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -28,12 +29,16 @@ $config = [
         ],
     ],
     'components' => [
+        'manajemen' => [
+            'class' => 'app\components\Manajemen',
+        ],
         'view' => [
              'theme' => [
                  'pathMap' => [
                     // 'basePath' => '@app/web/themes/yiisoft/yii2-app',
                     // 'baseUrl' => '@web/themes/yiisoft/yii2-app',
-                    '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
+                    // '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
+                    '@app/views' => '@app/themes/yiisoft/yii2-app'
                  ],
              ],
         ],
@@ -42,9 +47,9 @@ $config = [
                 'dmstr\web\AdminLteAsset' => [
                     // 'skin' => 'skin-blue',
                     // 'skin' => 'skin-black',
-                    'skin' => 'skin-yellow',
+                    // 'skin' => 'skin-yellow',
                     // 'skin' => 'skin-green',
-                    // 'skin' => 'skin-purple',
+                    'skin' => 'skin-purple',
                 ],
             ],
         ],
@@ -88,19 +93,28 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
+
+        // 'urlManager' => [
+        //     'enablePrettyUrl' => true,
+        //     'showScriptName' => false,
+        //     'rules' => [
+        //         '<controller:\w+>/<id:\d+>' => '<controller>/view',
+        //         '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+        //         '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+        //     ],
+        // ],
+
+        //=========== REST API ===========//
+        // 'response' => [
+        //     'format' => yii\web\Response::FORMAT_JSON,
+        //     'charset' => 'UTF-8',
+        // ],
+        
     ],
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
-            // '*',
+            '*',   
             // 'gii/*',
             // 'site/*',
             // 'admin/*',

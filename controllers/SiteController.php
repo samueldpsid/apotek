@@ -72,6 +72,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+
         $searchModelObatTerlaris = new TaDetailPenjualanSearch();
         $dataProviderObatTerlaris = $searchModelObatTerlaris->search(Yii::$app->request->queryParams);
 

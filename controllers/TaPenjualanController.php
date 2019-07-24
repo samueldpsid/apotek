@@ -85,27 +85,29 @@ class TaPenjualanController extends Controller
             $obat = [];
         }
 
-        $kd_obat = TaPenjualan::find()
+        // print_r($obat);die();
+
+        $kdPJ = TaPenjualan::find()
                 ->select('id')
                 ->orderBy(['id' => SORT_DESC])
                 ->limit(1)
                 ->all();
 
-        if (empty($kd_obat)) {
-            $last_kd_obat = "PJ-000000";
+        if (empty($kdPJ)) {
+            $last_kdPJ = "PJ-000000";
         }
         else {
-            $last_kd_obat = $kd_obat[0]['id'];
+            $last_kdPJ = $kdPJ[0]['id'];
         }
         
-        $kdObat = substr($last_kd_obat, 3, 6);
-        $kdObat++;
+        $kodePJ = substr($last_kdPJ, 3, 6);
+        $kodePJ++;
 
         $modelObat = new \yii\base\DynamicModel(['kd_obat', 'qty', 'uang_bayar', 'uang_kembali', 'catatan', 'user', 'kd_penjualan', 'tanggal', 'stok']);
         $modelObat->addRule(['kd_obat', 'kd_penjualan'], 'string', ['max' => 128]);
         $modelObat->addRule(['catatan', 'user'], 'string', ['max' => 255]);
         $modelObat->addRule(['qty', 'stok'], 'integer');
-        $modelObat->kd_penjualan = 'PJ-' . sprintf('%06s', $kdObat);
+        $modelObat->kd_penjualan = 'PJ-' . sprintf('%06s', $kodePJ);
         $modelObat->user = Yii::$app->user->identity->username;
         $modelObat->tanggal = date('d/m/Y');
         $modelObat->uang_kembali = 0;
@@ -184,6 +186,9 @@ class TaPenjualanController extends Controller
                 $stokObat->save();
 
                 if ($modelObat->save()) {
+                    $stokObat = RefObat::find()->where(['id'=>$value['kd_obat']])->one();
+                    $stokObat->stok -= $modelObat->jumlah;
+                    $stokObat->save();
                     unset($_SESSION['obat']);
                 }
             }
@@ -194,6 +199,7 @@ class TaPenjualanController extends Controller
 
         $session = Yii::$app->session;
         $obat = $session['obat'];
+        $model = TaDetailPenjualan::find()->where(['penjualan_id' => $kd_penjualan])->all();
 
         $tanggal             = date('Y-m-d');
         $day                 = date('D', strtotime($tanggal));
@@ -228,7 +234,7 @@ class TaPenjualanController extends Controller
         $pdf = new Pdf([
             'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
             'format' => Pdf::FORMAT_A4,
-            'content' => $this->renderPartial('penjualan-cetak', ['obat' => $obat, 'kd_penjualan' => $kd_penjualan, 'grand_total' => $grand_total, 'uang_bayar' => $uang_bayar, 'uang_kembali' => $uang_kembali]),
+            'content' => $this->renderPartial('penjualan-cetak', ['model' => $model, 'kd_penjualan' => $kd_penjualan, 'grand_total' => $grand_total, 'uang_bayar' => $uang_bayar, 'uang_kembali' => $uang_kembali]),
             'options' => [
                 'title' => '',
             //'subject' => 'Generating PDF files via yii2-mpdf extension has never been easy'
@@ -246,8 +252,6 @@ class TaPenjualanController extends Controller
             'filename' => 'Laporan Penjualan',
         ]);
         return $pdf->render();
-
-        // unset($_SESSION['obat']);
     }
 
     /**

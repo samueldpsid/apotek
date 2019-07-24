@@ -47,16 +47,16 @@
     <tbody>   
         <?php
             $total = 0;
-            if (isset($obat)) {
-                // print_r($obat);
-                foreach ($obat as $key => $value):
-                $data = RefObat::find()->where(['id'=>$value['kd_obat']])->one();
+            if (isset($model)) {
+                // print_r($model);
+                foreach ($model as $key => $value):
+                $data = RefObat::find()->where(['id'=>$value['obat_id']])->one();
 
-                $subtotal = $data->harga_jual * $value['qty'];
+                $subtotal = $data->harga_jual * $value['jumlah'];
                 ?>
                     <tr>
                         <td id="tbody" style="font-size: 12px;"><?= $data->nama_obat ?></td>
-                        <td id="tbody" style="text-align: center; font-size: 12px"><?= $value['qty'] ?></td>
+                        <td id="tbody" style="text-align: center; font-size: 12px"><?= $value['jumlah'] ?></td>
                         <td id="tbody" style="text-align: right; font-size: 12px"><?= number_format($data->harga_jual,0,",",".") ?></td>
                         <td id="tbody" style="text-align: right; font-size: 12px"><?= number_format($subtotal,0,",",".") ?></td>
                     </tr>

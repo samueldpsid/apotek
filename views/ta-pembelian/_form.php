@@ -239,7 +239,7 @@ $this->registerJs("
     </div>
 </div>
 
-<?= $this->render('/ta-penjualan/daftar-obat',[
+<?= $this->render('daftar-obat',[
     'dataProviderObat' => $dataProviderObat,
     'searchModelObat' => $searchModelObat,
 ]) ?>
